@@ -27,7 +27,7 @@ def is_array(a):
 
 
 def to_array(a, n: int):
-    if is_array(a) and len(a) == n:
+    if is_array(a):
         return np.asarray(a)
 
     return np.array([a] * n)

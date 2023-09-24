@@ -62,13 +62,13 @@ class Axes(plt.Axes):
         vmax=1,
         cmap="viridis",
         mappable=None,
-        length=100,
-        thick=10,
-        pad=10,
+        length=20,
+        thick=5,
+        pad=5,
         pad_unit="pt",
-        orientation="v",
-        loc0="r",
-        loc1="l",
+        orientation=None,
+        loc0="rb",
+        loc1=None,
         clip=False,
         length_unit="pt",
         thick_unit="pt",
@@ -77,7 +77,20 @@ class Axes(plt.Axes):
     ):
         from mplex.axes_collection import AxArray
 
-        AxArray(self).add_colorbar(vmin, vmax, cmap, mappable, length, thick, pad, pad_unit, orientation, loc0, loc1, clip, length_unit, thick_unit, ax_kwargs, **kwargs)
+        return AxArray(self).add_colorbar(vmin, vmax, cmap, mappable, length, thick, pad, pad_unit, orientation, loc0, loc1,
+                                   clip, length_unit, thick_unit, ax_kwargs, **kwargs)
+
+    def set_tick_direction(self, directions: str):
+        return set_tick_direction(directions, ax=self)
+
+    def set_tight_bounds(self, x=True, y=True):
+        return set_tight_bounds(x, y, ax=self)
+
+    def remove_ticklabels_trailing_zeros(self, which="both"):
+        return remove_ticklabels_trailing_zeros(which, ax=self)
+
+    def set_visible_sides(self, sides=None, *, spines=None, ticks=None, ticklabels=None):
+        return set_visible_sides(sides, spines=spines, ticks=ticks, ticklabels=ticklabels, ax=self)
 
 
 def set_tick_direction(directions: str, ax: plt.Axes):
@@ -114,17 +127,6 @@ def set_tight_bounds(x=True, y=True, *, ax: plt.Axes):
     ax.spines.left.set_bounds(a, b)
 
 
-def add_bounding_axes(*axs: plt.Axes):
-    fig: plt.Figure = next(iter(axs)).figure
-    assert all(ax.figure is fig for ax in axs)
-    trans = fig.transFigure.inverted()
-    points = [ax.get_window_extent().transformed(trans).get_points() for ax in axs]
-    x, y = np.min(points, (0, 1))
-    w, h = np.ptp(points, (0, 1))
-    ax = fig.add_axes((x, y, w, h))
-    return ax
-
-
 def remove_ticklabels_trailing_zeros(which="both", *, ax: plt.Axes):
     from matplotlib.ticker import FormatStrFormatter
 
@@ -137,7 +139,7 @@ def remove_ticklabels_trailing_zeros(which="both", *, ax: plt.Axes):
         ax.yaxis.set_major_formatter(FormatStrFormatter("%g"))
 
 
-def set_visible(sides=None, *, spines=None, ticks=None, ticklabels=None, ax: plt.Axes):
+def set_visible_sides(sides=None, *, spines=None, ticks=None, ticklabels=None, ax: plt.Axes):
     if sides is not None:
         spines = ticks = ticklabels = sides
 
@@ -262,6 +264,17 @@ def add_axes(
             new_ax.xaxis.tick_bottom()
 
     return new_ax
+
+
+def add_bounding_axes(*axs: plt.Axes):
+    fig: plt.Figure = next(iter(axs)).figure
+    assert all(ax.figure is fig for ax in axs)
+    trans = fig.transFigure.inverted()
+    points = [ax.get_window_extent().transformed(trans).get_points() for ax in axs]
+    x, y = np.min(points, (0, 1))
+    w, h = np.ptp(points, (0, 1))
+    ax = fig.add_axes((x, y, w, h))
+    return ax
 
 
 def get_row_span(*axs: plt.Axes):

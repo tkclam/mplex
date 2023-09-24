@@ -50,10 +50,10 @@ class Grid(Figure):
         wspace = to_array(wspace, ncol - 1)
         hspace = to_array(hspace, nrow - 1)
 
-        if abs(len(wspace) - ncol) != 1 and len(wspace) < ncol - 1:
+        if len(wspace) < ncol - 1:
             wspace = wspace[np.arange(ncol - 1) % len(wspace)]
 
-        if abs(len(hspace) - nrow) != 1 and len(hspace) < nrow - 1:
+        if len(hspace) < nrow - 1:
             hspace = hspace[np.arange(nrow - 1) % len(hspace)]
 
         if len(wspace) == ncol - 1:

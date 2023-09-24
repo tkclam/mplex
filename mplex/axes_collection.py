@@ -11,7 +11,7 @@ from mplex.axes import (
     get_col_span,
     get_row_span,
     remove_ticklabels_trailing_zeros,
-    set_visible,
+    set_visible_sides,
 )
 
 
@@ -110,20 +110,40 @@ class AxArray:
         vmax=1,
         cmap="viridis",
         mappable=None,
-        length=100,
-        thick=10,
-        pad=10,
+        length=20,
+        thick=5,
+        pad=5,
         pad_unit="pt",
-        orientation="v",
-        loc0="r",
-        loc1="l",
+        orientation=None,
+        loc0="rb",
+        loc1=None,
         clip=False,
         length_unit="pt",
         thick_unit="pt",
         ax_kwargs=None,
         **kwargs,
     ):
+        loc0 = core.get_loc_name(loc0)
+
+        if orientation is None:
+            if loc0 in ("ct", "cb"):
+                orientation = "h"
+            else:
+                orientation = "v"
+
         orientation = core.get_orientation(orientation)
+
+        if loc1 is None:
+            if loc0[0] == "l":
+                loc1 = "r" + loc0[1]
+            elif loc0[0] == "r":
+                loc1 = "l" + loc0[1]
+            elif loc0[1] == "t":
+                loc1 = loc0[0] + "b"
+            elif loc0[1] == "b":
+                loc1 = loc0[0] + "t"
+            else:
+                loc1 = "cc"
 
         if orientation == "vertical":
             size = thick, length
@@ -147,11 +167,12 @@ class AxArray:
             norm = Normalize(vmin, vmax, clip)
             mappable = ScalarMappable(norm, cmap)
         cb = fig.colorbar(mappable, cax=cax, orientation=orientation, **kwargs)
+
         return cb
 
     def set_visible(self, sides=None, *, spines=None, ticks=None, ticklabels=None):
         for ax in self:
-            set_visible(sides, spines=spines, ticks=ticks, ticklabels=ticklabels, ax=ax)
+            set_visible_sides(sides, spines=spines, ticks=ticks, ticklabels=ticklabels, ax=ax)
 
     def set_tight_bounds(self, x=True, y=True):
         for ax in self:
