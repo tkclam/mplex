@@ -161,8 +161,8 @@ class AxArray:
 
         fig = cax.figure
         if mappable is None:
-            from matplotlib.colors import Normalize
             from matplotlib.cm import ScalarMappable
+            from matplotlib.colors import Normalize
 
             norm = Normalize(vmin, vmax, clip)
             mappable = ScalarMappable(norm, cmap)
@@ -172,7 +172,9 @@ class AxArray:
 
     def set_visible(self, sides=None, *, spines=None, ticks=None, ticklabels=None):
         for ax in self:
-            set_visible_sides(sides, spines=spines, ticks=ticks, ticklabels=ticklabels, ax=ax)
+            set_visible_sides(
+                sides, spines=spines, ticks=ticks, ticklabels=ticklabels, ax=ax
+            )
 
     def set_tight_bounds(self, x=True, y=True):
         for ax in self:

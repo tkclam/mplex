@@ -1,11 +1,11 @@
 from itertools import product, zip_longest
 
-import numpy as np
 import matplotlib.pyplot as plt
-from mplex.axes import Axes
+import numpy as np
 from matplotlib.gridspec import GridSpec
 
 from mplex import core
+from mplex.axes import Axes
 from mplex.axes_collection import AxArray2D
 from mplex.figure import Figure
 from mplex.utils import safe_len, safe_unpack, to_array
@@ -95,7 +95,8 @@ class Grid(Figure):
 
         for i, j in product(range(nrow), range(ncol)):
             self._axes[i, j] = Axes(
-                self._fig, self._gs[i * 2 + 1, j * 2 + 1],
+                self._fig,
+                self._gs[i * 2 + 1, j * 2 + 1],
                 sharex=_get_shared_ax(i, j, self._sharex, self._axes),
                 sharey=_get_shared_ax(i, j, self._sharey, self._axes),
             )

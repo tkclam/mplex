@@ -54,7 +54,23 @@ class Axes(plt.Axes):
     ):
         from mplex.annotate import add_scale_bars
 
-        return add_scale_bars(x0, y0, dx, dy, xlabel, ylabel, pad, lw, c, ls, size, fmt, text_kw, line_kw, ax=self)
+        return add_scale_bars(
+            x0,
+            y0,
+            dx,
+            dy,
+            xlabel,
+            ylabel,
+            pad,
+            lw,
+            c,
+            ls,
+            size,
+            fmt,
+            text_kw,
+            line_kw,
+            ax=self,
+        )
 
     def add_colorbar(
         self,
@@ -77,8 +93,24 @@ class Axes(plt.Axes):
     ):
         from mplex.axes_collection import AxArray
 
-        return AxArray(self).add_colorbar(vmin, vmax, cmap, mappable, length, thick, pad, pad_unit, orientation, loc0, loc1,
-                                   clip, length_unit, thick_unit, ax_kwargs, **kwargs)
+        return AxArray(self).add_colorbar(
+            vmin,
+            vmax,
+            cmap,
+            mappable,
+            length,
+            thick,
+            pad,
+            pad_unit,
+            orientation,
+            loc0,
+            loc1,
+            clip,
+            length_unit,
+            thick_unit,
+            ax_kwargs,
+            **kwargs,
+        )
 
     def set_tick_direction(self, directions: str):
         return set_tick_direction(directions, ax=self)
@@ -89,8 +121,12 @@ class Axes(plt.Axes):
     def remove_ticklabels_trailing_zeros(self, which="both"):
         return remove_ticklabels_trailing_zeros(which, ax=self)
 
-    def set_visible_sides(self, sides=None, *, spines=None, ticks=None, ticklabels=None):
-        return set_visible_sides(sides, spines=spines, ticks=ticks, ticklabels=ticklabels, ax=self)
+    def set_visible_sides(
+        self, sides=None, *, spines=None, ticks=None, ticklabels=None
+    ):
+        return set_visible_sides(
+            sides, spines=spines, ticks=ticks, ticklabels=ticklabels, ax=self
+        )
 
 
 def set_tick_direction(directions: str, ax: plt.Axes):
@@ -139,7 +175,9 @@ def remove_ticklabels_trailing_zeros(which="both", *, ax: plt.Axes):
         ax.yaxis.set_major_formatter(FormatStrFormatter("%g"))
 
 
-def set_visible_sides(sides=None, *, spines=None, ticks=None, ticklabels=None, ax: plt.Axes):
+def set_visible_sides(
+    sides=None, *, spines=None, ticks=None, ticklabels=None, ax: plt.Axes
+):
     if sides is not None:
         spines = ticks = ticklabels = sides
 

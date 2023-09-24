@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt
 
-from mplex.utils import safe_unpack, convert_unit
+from mplex.utils import convert_unit, safe_unpack
 
 
 class Figure:

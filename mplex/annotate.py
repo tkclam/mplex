@@ -102,7 +102,9 @@ def add_scale_bars(
     ret = dict()
 
     if dx:
-        ret["line_x"] = ax.plot([x0, x0 + dx], [y0, y0], lw=lwx, c=cx, ls=lsx, **line_kw)
+        ret["line_x"] = ax.plot(
+            [x0, x0 + dx], [y0, y0], lw=lwx, c=cx, ls=lsx, **line_kw
+        )
         xlabel = fmt.format(dx) + str(xlabel)
         ret["text_x"] = ax.annotate(
             xlabel,
@@ -112,7 +114,9 @@ def add_scale_bars(
         )
 
     if dy:
-        ret["line_y"] = ax.plot([x0, x0], [y0, y0 + dy], lw=lwy, c=cy, ls=lsy, **line_kw)
+        ret["line_y"] = ax.plot(
+            [x0, x0], [y0, y0 + dy], lw=lwy, c=cy, ls=lsy, **line_kw
+        )
         ylabel = fmt.format(dy) + str(ylabel)
         ret["text_y"] = ax.annotate(
             ylabel,
