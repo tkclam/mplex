@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from mplex.units import convert
+from mplex.utils import convert_unit
 
 
 def get_shifted_trans_axes(
@@ -15,7 +15,7 @@ def get_shifted_trans_axes(
     if ax is None:
         ax = plt.gca()
 
-    dx, dy = convert((dx, dy), fro=unit, to="inch")
+    dx, dy = convert_unit((dx, dy), fro=unit, to="inch")
 
     translate = ScaledTranslation(dx, dy, ax.get_figure().dpi_scale_trans)
 

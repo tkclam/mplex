@@ -54,12 +54,12 @@ def add_line_across_axes(
 def add_scale_bars(
     x0,
     y0,
-    dx,
-    dy,
-    xlabel,
-    ylabel,
+    dx=None,
+    dy=None,
+    xlabel=None,
+    ylabel=None,
     pad=2,
-    lw=1,
+    lw=0.5,
     c="k",
     ls="-",
     size=6,
@@ -98,21 +98,27 @@ def add_scale_bars(
 
     kwx["size"] = size_x
     kwy["size"] = size_y
-    line_x = ax.plot([x0, x0 + dx], [y0, y0], lw=lwx, c=cx, ls=lsx, **line_kw)
-    line_y = ax.plot([x0, x0], [y0, y0 + dy], lw=lwy, c=cy, ls=lsy, **line_kw)
-    xlabel = fmt.format(dx) + xlabel
-    ylabel = fmt.format(dy) + ylabel
 
-    text_x = ax.annotate(
-        xlabel,
-        (x0 + dx / 2, y0),
-        xytext=(0, -xpad),
-        **kwx,
-    )
-    text_y = ax.annotate(
-        ylabel,
-        (x0, y0 + dy / 2),
-        xytext=(-ypad, 0),
-        **kwy,
-    )
-    return dict(line_x=line_x, line_y=line_y, text_x=text_x, text_y=text_y)
+    ret = dict()
+
+    if dx:
+        ret["line_x"] = ax.plot([x0, x0 + dx], [y0, y0], lw=lwx, c=cx, ls=lsx, **line_kw)
+        xlabel = fmt.format(dx) + str(xlabel)
+        ret["text_x"] = ax.annotate(
+            xlabel,
+            (x0 + dx / 2, y0),
+            xytext=(0, -xpad),
+            **kwx,
+        )
+
+    if dy:
+        ret["line_y"] = ax.plot([x0, x0], [y0, y0 + dy], lw=lwy, c=cy, ls=lsy, **line_kw)
+        ylabel = fmt.format(dy) + str(ylabel)
+        ret["text_y"] = ax.annotate(
+            ylabel,
+            (x0, y0 + dy / 2),
+            xytext=(-ypad, 0),
+            **kwy,
+        )
+
+    return ret

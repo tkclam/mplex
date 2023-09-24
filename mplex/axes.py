@@ -2,13 +2,85 @@ from typing import Tuple, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.axes import Axes
 
 from mplex import core, utils
-from mplex.units import convert
+from mplex.utils import convert_unit
 
 
-def set_tick_direction(directions: str, ax: Axes):
+class Axes(plt.Axes):
+    def add_text(
+        self,
+        x,
+        y,
+        s,
+        pad=0,
+        transform="axes",
+        pad_unit="offset points",
+        ha="l",
+        va="b",
+        **kwargs,
+    ):
+        from mplex.text import add_text
+
+        return add_text(
+            x,
+            y,
+            s,
+            pad=pad,
+            transform=transform,
+            pad_unit=pad_unit,
+            ha=ha,
+            va=va,
+            ax=self,
+            **kwargs,
+        )
+
+    def add_scale_bars(
+        self,
+        x0,
+        y0,
+        dx,
+        dy,
+        xlabel,
+        ylabel,
+        pad=2,
+        lw=1,
+        c="k",
+        ls="-",
+        size=6,
+        fmt="{} ",
+        text_kw=None,
+        line_kw=None,
+    ):
+        from mplex.annotate import add_scale_bars
+
+        return add_scale_bars(x0, y0, dx, dy, xlabel, ylabel, pad, lw, c, ls, size, fmt, text_kw, line_kw, ax=self)
+
+    def add_colorbar(
+        self,
+        vmin=0,
+        vmax=1,
+        cmap="viridis",
+        mappable=None,
+        length=100,
+        thick=10,
+        pad=10,
+        pad_unit="pt",
+        orientation="v",
+        loc0="r",
+        loc1="l",
+        clip=False,
+        length_unit="pt",
+        thick_unit="pt",
+        ax_kwargs=None,
+        **kwargs,
+    ):
+        from mplex.axes_collection import AxArray
+
+        AxArray(self).add_colorbar(vmin, vmax, cmap, mappable, length, thick, pad, pad_unit, orientation, loc0, loc1, clip, length_unit, thick_unit, ax_kwargs, **kwargs)
+
+
+def set_tick_direction(directions: str, ax: plt.Axes):
     direction_dict = {"i": "in", "o": "out", "b": "inout"}
 
     if len(directions) == 1:
@@ -22,7 +94,7 @@ def set_tick_direction(directions: str, ax: Axes):
             ax.tick_params(i, direction=direction)
 
 
-def set_tight_bounds(x=True, y=True, *, ax: Axes):
+def set_tight_bounds(x=True, y=True, *, ax: plt.Axes):
     a, b = ax.get_xlim()
 
     if x:
@@ -42,7 +114,7 @@ def set_tight_bounds(x=True, y=True, *, ax: Axes):
     ax.spines.left.set_bounds(a, b)
 
 
-def add_bounding_axes(*axs: Axes):
+def add_bounding_axes(*axs: plt.Axes):
     fig: plt.Figure = next(iter(axs)).figure
     assert all(ax.figure is fig for ax in axs)
     trans = fig.transFigure.inverted()
@@ -53,7 +125,7 @@ def add_bounding_axes(*axs: Axes):
     return ax
 
 
-def remove_ticklabels_trailing_zeros(which="both", *, ax: Axes):
+def remove_ticklabels_trailing_zeros(which="both", *, ax: plt.Axes):
     from matplotlib.ticker import FormatStrFormatter
 
     if which == "both":
@@ -65,7 +137,7 @@ def remove_ticklabels_trailing_zeros(which="both", *, ax: Axes):
         ax.yaxis.set_major_formatter(FormatStrFormatter("%g"))
 
 
-def set_visible(sides=None, *, spines=None, ticks=None, ticklabels=None, ax: Axes):
+def set_visible(sides=None, *, spines=None, ticks=None, ticklabels=None, ax: plt.Axes):
     if sides is not None:
         spines = ticks = ticklabels = sides
 
@@ -123,19 +195,19 @@ def add_axes(
     ax_size = fig.get_size_inches() * (box.width, box.height)
 
     if "ax" not in x_unit:
-        x = convert(x, x_unit, "inch") / ax_size[0]
+        x = convert_unit(x, x_unit, "inch") / ax_size[0]
     if "ax" not in y_unit:
-        y = convert(y, y_unit, "inch") / ax_size[1]
+        y = convert_unit(y, y_unit, "inch") / ax_size[1]
 
     if w is None:
         w = 1
     elif "ax" not in w_unit:
-        w = convert(w, w_unit, "inch") / ax_size[0]
+        w = convert_unit(w, w_unit, "inch") / ax_size[0]
 
     if h is None:
         h = 1
     elif "ax" not in h_unit:
-        h = convert(h, h_unit, "inch") / ax_size[1]
+        h = convert_unit(h, h_unit, "inch") / ax_size[1]
 
     p0 = core.LOC_NAME_TO_XY[loc0]
     p1 = core.LOC_NAME_TO_XY[loc1]
@@ -163,8 +235,8 @@ def add_axes(
     if isinstance(pad_unit, str):
         pad_unit = (pad_unit,) * 2
 
-    dx = convert(dx, pad_unit[0], "inch") / ax_size[0]
-    dy = convert(dy, pad_unit[1], "inch") / ax_size[1]
+    dx = convert_unit(dx, pad_unit[0], "inch") / ax_size[0]
+    dy = convert_unit(dy, pad_unit[1], "inch") / ax_size[1]
 
     if loc1[0] == "r":
         dx = -dx
@@ -192,14 +264,14 @@ def add_axes(
     return new_ax
 
 
-def get_row_span(*axs: Axes):
+def get_row_span(*axs: plt.Axes):
     row_spans = [ax.get_subplotspec().rowspan for ax in axs]
     row0 = min(i.start for i in row_spans)
     row1 = max(i.stop for i in row_spans)
     return row0, row1
 
 
-def get_col_span(*axs: Axes):
+def get_col_span(*axs: plt.Axes):
     col_spans = [ax.get_subplotspec().colspan for ax in axs]
     col0 = min(i.start for i in col_spans)
     col1 = max(i.stop for i in col_spans)

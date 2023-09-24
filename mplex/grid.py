@@ -1,7 +1,8 @@
 from itertools import product, zip_longest
 
 import numpy as np
-from matplotlib.axes import Axes
+import matplotlib.pyplot as plt
+from mplex.axes import Axes
 from matplotlib.gridspec import GridSpec
 
 from mplex import core
@@ -10,7 +11,7 @@ from mplex.figure import Figure
 from mplex.utils import safe_len, safe_unpack, to_array
 
 
-def _get_shared_ax(row: int, col: int, how: str, axs: np.ndarray[Axes]):
+def _get_shared_ax(row: int, col: int, how: str, axs: np.ndarray[plt.Axes]):
     how = core.get_share_ax_name(how)
     return {"row": axs[row, 0], "col": axs[0, col], "all": axs[0, 0]}.get(how, None)
 
@@ -93,11 +94,12 @@ class Grid(Figure):
         self._sharey = core.get_share_ax_name(sharey)
 
         for i, j in product(range(nrow), range(ncol)):
-            self._axes[i, j] = self._fig.add_subplot(
-                self._gs[i * 2 + 1, j * 2 + 1],
+            self._axes[i, j] = Axes(
+                self._fig, self._gs[i * 2 + 1, j * 2 + 1],
                 sharex=_get_shared_ax(i, j, self._sharex, self._axes),
                 sharey=_get_shared_ax(i, j, self._sharey, self._axes),
             )
+            self._fig.add_subplot(self._axes[i, j])
 
         self._ca = self[:]
 

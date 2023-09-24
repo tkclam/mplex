@@ -10,6 +10,7 @@ def add_text(
     pad_unit="offset points",
     ha="l",
     va="b",
+    outline_kwargs=None,
     ax=None,
     **kwargs,
 ):
@@ -36,12 +37,13 @@ def add_text(
     if len(va) == 1:
         va = core.get_va(va)
 
-    return ax.annotate(s, (x, y), pad, transform, pad_unit, ha=ha, va=va, **kwargs)
+    text = ax.annotate(s, (x, y), pad, transform, pad_unit, ha=ha, va=va, **kwargs)
 
+    if outline_kwargs is not None:
+        from matplotlib import patheffects
 
-def set_text_outline(text, lw=1, color="w"):
-    from matplotlib import patheffects
+        text.set_path_effects(
+            [patheffects.Stroke(**outline_kwargs), patheffects.Normal()]
+        )
 
-    text.set_path_effects(
-        [patheffects.Stroke(linewidth=lw, foreground=color), patheffects.Normal()]
-    )
+    return text

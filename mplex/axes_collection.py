@@ -13,7 +13,6 @@ from mplex.axes import (
     remove_ticklabels_trailing_zeros,
     set_visible,
 )
-from mplex.colorbar import add_colorbar
 
 
 class AxArray:
@@ -139,16 +138,15 @@ class AxArray:
         cax = self.add_axes(
             size, unit, loc0, loc1, pad=pad, pad_unit=pad_unit, **ax_kwargs
         )
-        cb = add_colorbar(
-            cax,
-            vmin,
-            vmax,
-            cmap,
-            clip,
-            mappable=mappable,
-            orientation=orientation,
-            **kwargs,
-        )
+
+        fig = cax.figure
+        if mappable is None:
+            from matplotlib.colors import Normalize
+            from matplotlib.cm import ScalarMappable
+
+            norm = Normalize(vmin, vmax, clip)
+            mappable = ScalarMappable(norm, cmap)
+        cb = fig.colorbar(mappable, cax=cax, orientation=orientation, **kwargs)
         return cb
 
     def set_visible(self, sides=None, *, spines=None, ticks=None, ticklabels=None):
