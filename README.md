@@ -12,7 +12,7 @@ from mplex import Grid
 # subplots with uniform size and spacing
 g = Grid((30, 20), (2, 3), space=(15, 10))
 # subplots with non-uniform size and spacing
-g = Grid((30, 20), (2, 3), space=(15, 10))
+g = Grid(([35, 20, 35], [10, 30]), space=([20, 10], 10))
 ```
 ![](examples/figures/uniform.svg)
 
