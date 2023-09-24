@@ -1,3 +1,4 @@
+[![PyPI Latest Release](https://img.shields.io/pypi/v/mplex.svg)](https://pypi.org/project/mplex/)
 # mplex
 A matplotlib extension.
 
