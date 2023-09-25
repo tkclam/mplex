@@ -7,6 +7,7 @@ import mplex.axes
 from mplex import core
 from mplex.annotate import add_bar
 from mplex.axes import (
+    Axes,
     add_axes,
     get_col_span,
     get_row_span,
@@ -69,9 +70,8 @@ class AxArray:
         if behind:
             kwargs["zorder"] = min(ax.zorder for ax in axs) - 1
 
-        ax: plt.Axes = fig.add_subplot(
-            gs[row0:row1, col0:col1], sharex=sharex, sharey=sharey, **kwargs
-        )
+        ax = Axes(fig, gs[row0:row1, col0:col1], sharex=sharex, sharey=sharey, **kwargs)
+        fig.add_subplot(ax)
         ax.axis("off")
         return ax
 
