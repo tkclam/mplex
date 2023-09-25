@@ -66,6 +66,7 @@ def add_scale_bars(
     fmt="{} ",
     text_kw=None,
     line_kw=None,
+    transform="data",
     ax=None,
 ):
     if ax is None:
@@ -87,6 +88,11 @@ def add_scale_bars(
         ha="center",
         annotation_clip=False,
     )
+
+    if transform == "axes":
+        kw["xycoords"] = ax.transAxes
+        line_kw["transform"] = ax.transAxes
+
     kwx = dict(rotation=0, va="top", size=size_x, **kw)
     kwy = dict(rotation=90, va="baseline", size=size_y, **kw)
     kwx_, kwy_ = safe_unpack(text_kw)

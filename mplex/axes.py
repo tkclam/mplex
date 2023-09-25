@@ -51,6 +51,7 @@ class Axes(plt.Axes):
         fmt="{} ",
         text_kw=None,
         line_kw=None,
+        transform="axes",
     ):
         from mplex.annotate import add_scale_bars
 
@@ -69,6 +70,7 @@ class Axes(plt.Axes):
             fmt,
             text_kw,
             line_kw,
+            transform,
             ax=self,
         )
 
