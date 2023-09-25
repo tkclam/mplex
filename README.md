@@ -19,4 +19,4 @@ g = Grid(([35, 20, 35], [10, 30]), space=([20, 10], 10))
 
 ![](examples/figures/non_uniform.svg)
 
-[More exaples](https://github.com/tkclam/mplex/tree/main/examples)
+[More examples](https://github.com/tkclam/mplex/tree/main/examples)
