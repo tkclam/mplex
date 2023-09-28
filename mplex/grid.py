@@ -1,6 +1,5 @@
 from itertools import product, zip_longest
 
-import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.gridspec import GridSpec
 
@@ -11,7 +10,7 @@ from mplex.figure import Figure
 from mplex.utils import safe_len, safe_unpack, to_array
 
 
-def _get_shared_ax(row: int, col: int, how: str, axs: np.ndarray[plt.Axes]):
+def _get_shared_ax(row: int, col: int, how: str, axs: np.ndarray):
     how = core.get_share_ax_name(how)
     return {"row": axs[row, 0], "col": axs[0, col], "all": axs[0, 0]}.get(how, None)
 

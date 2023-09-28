@@ -6,7 +6,7 @@ from mplex.transforms import get_shifted_trans_axes
 from mplex.utils import safe_unpack
 
 
-def add_bar(axs: np.ndarray[Axes], fro=0, to=-1, side="t", pad=0, **kwargs):
+def add_bar(axs: np.ndarray, fro=0, to=-1, side="t", pad=0, **kwargs):
     side = side.lower()
 
     lines = {}
