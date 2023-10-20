@@ -96,7 +96,6 @@ def add_scale_bars(
     kwx = dict(rotation=0, va="top", size=size_x, **kw)
     kwy = dict(rotation=90, va="baseline", size=size_y, **kw)
     kwx_, kwy_ = safe_unpack(text_kw)
-
     if kwx_ is not None:
         kwx.update(**kwx_)
     if kwy_ is not None:
