@@ -216,7 +216,7 @@ patch.linewidth:       0.5     # edge width in points.
 ## relative to font.size, using the following values: xx-small, x-small,
 ## small, medium, large, x-large, xx-large, larger, or smaller
 
-#font.family:  sans-serif
+font.family:  sans-serif
 #font.style:   normal
 #font.variant: normal
 #font.weight:  normal
@@ -267,13 +267,14 @@ font.sans-serif: Helvetica, Arial, DejaVu Sans, Bitstream Vera Sans, Computer Mo
 ## ***************************************************************************
 ## For more information on LaTeX properties, see
 ## https://matplotlib.org/stable/users/explain/text/usetex.html
-#text.usetex: False  # use latex for all text handling. The following fonts
+text.usetex: True    # use latex for all text handling. The following fonts
                      # are supported through the usual rc parameter settings:
                      # new century schoolbook, bookman, times, palatino,
                      # zapf chancery, charter, serif, sans-serif, helvetica,
                      # avant garde, courier, monospace, computer modern roman,
                      # computer modern sans serif, computer modern typewriter
-#text.latex.preamble:   # IMPROPER USE OF THIS FEATURE WILL LEAD TO LATEX FAILURES
+text.latex.preamble: \usepackage{sansmath}\sansmath
+                        # IMPROPER USE OF THIS FEATURE WILL LEAD TO LATEX FAILURES
                         # AND IS THEREFORE UNSUPPORTED. PLEASE DO NOT ASK FOR HELP
                         # IF THIS FEATURE DOES NOT DO WHAT YOU EXPECT IT TO.
                         # text.latex.preamble is a single line of LaTeX code that

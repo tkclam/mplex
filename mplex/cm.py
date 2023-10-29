@@ -7,6 +7,10 @@ from mplex.colors import remove_bg
 
 
 def map_cmap(func: Callable, cmap: str | colors.Colormap, lut=None):
+    from matplotlib.colors import ListedColormap
+
+    if isinstance(cmap, list):
+        cmap = ListedColormap(cmap)
     cmap = cm.get_cmap(cmap, lut)
     return colors.ListedColormap([func(cmap(i)) for i in np.linspace(0, 1, cmap.N)])
 

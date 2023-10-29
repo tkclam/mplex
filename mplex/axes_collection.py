@@ -36,7 +36,8 @@ class AxArray:
 
         if all(map(callable, a.ravel())):
             return lambda *args, **kwargs: np.array(
-                [i(*args, **kwargs) for i in a.ravel()]
+                [i(*args, **kwargs) for i in a.ravel()],
+                object,
             ).reshape((*self._axs.shape, -1))
 
         return a
