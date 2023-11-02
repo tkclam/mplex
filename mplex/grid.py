@@ -156,3 +156,10 @@ class Grid(Figure):
     def sca(self, *keys):
         """Set current axes"""
         self._ca = self[keys]
+
+    def to_rgba_array(self):
+        canvas = self.fig.canvas
+        canvas.draw()
+        img = np.frombuffer(canvas.buffer_rgba(), dtype=np.uint8)
+        img = img.reshape(canvas.get_width_height()[::-1] + (4,))
+        return img
