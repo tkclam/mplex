@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 from mplex import core
 
 
@@ -47,3 +49,15 @@ def add_text(
         )
 
     return text
+
+
+def get_text_size(text, ax=None, **kwargs):
+    if ax is None:
+        ax = plt.gca()
+
+    kwargs = dict(dict(x=0, y=0), **kwargs)
+    r = ax.figure.canvas.get_renderer()
+    t = ax.text(s=text, **kwargs)
+    bb = t.get_window_extent(renderer=r)
+    t.remove()
+    return bb.width, bb.height

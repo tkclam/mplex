@@ -34,6 +34,8 @@ def to_array(a, n: int):
 
 
 def safe_unpack(a, *, default1=None, default2=None):
+    if isinstance(a, (str, dict)):
+        a = (a, a)
     try:
         a1, a2 = a
     except (TypeError, ValueError):
