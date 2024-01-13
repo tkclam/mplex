@@ -24,7 +24,7 @@ def cplot(x, y, c=None, cmap="viridis", vmin=0, vmax=1, *, ax, **kwargs):
     points = np.column_stack([x, y])[:, None]
     segments = np.concatenate([points[:-1], points[1:]], axis=1)
 
-    lc = LineCollection(segments, colors=colors, **kwargs)
+    lc = LineCollection(segments, colors=colors, **kwargs, capstyle="round")
     ax.autoscale()
 
     return ax.add_collection(lc)

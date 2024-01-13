@@ -14,7 +14,7 @@ class Axes(plt.Axes):
         y,
         s,
         pad=0,
-        transform="axes",
+        transform="data",
         pad_unit="offset points",
         ha="l",
         va="b",

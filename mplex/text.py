@@ -8,7 +8,7 @@ def add_text(
     y,
     s,
     pad=0,
-    transform="axes",
+    transform="data",
     pad_unit="offset points",
     ha="l",
     va="b",
@@ -42,22 +42,34 @@ def add_text(
     text = ax.annotate(s, (x, y), pad, transform, pad_unit, ha=ha, va=va, **kwargs)
 
     if outline_kwargs is not None:
-        from matplotlib import patheffects
-
-        text.set_path_effects(
-            [patheffects.Stroke(**outline_kwargs), patheffects.Normal()]
-        )
+        set_text_outline(text, **outline_kwargs)
 
     return text
 
 
-def get_text_size(text, ax=None, **kwargs):
+def set_text_outline(text, lw=2, c="w", **kwargs):
+    from matplotlib import patheffects
+
+    kwargs = dict(dict(linewidth=lw, foreground=c), **kwargs)
+    text.set_path_effects([patheffects.Stroke(**kwargs), patheffects.Normal()])
+
+
+def get_text_bbox(text, ax=None, **kwargs):
     if ax is None:
         ax = plt.gca()
 
+    remove = False
     kwargs = dict(dict(x=0, y=0), **kwargs)
     r = ax.figure.canvas.get_renderer()
-    t = ax.text(s=text, **kwargs)
-    bb = t.get_window_extent(renderer=r)
-    t.remove()
+    if isinstance(text, str):
+        text = ax.text(text, **kwargs)
+        remove = True
+    bb = text.get_window_extent(renderer=r)
+    if remove:
+        text.remove()
+    return bb
+
+
+def get_text_size(text, ax=None, **kwargs):
+    bb = get_text_bbox(text, ax=ax, **kwargs)
     return bb.width, bb.height

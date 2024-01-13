@@ -9,6 +9,7 @@ _to_inch = {
     "inch": Fraction(1),
     "in": Fraction(1),
     "cm": Fraction(50, 127),
+    "mm": Fraction(5, 127),
 }
 
 
