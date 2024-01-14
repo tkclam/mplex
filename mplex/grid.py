@@ -21,6 +21,7 @@ class Grid(Figure):
         axsize=(100, 100),
         shape=(None, None),
         space=(0, 0),
+        border=(0, 0, 0, 0),
         figsize=(None, None),
         unit="pt",
         spines="a",
@@ -54,12 +55,17 @@ class Grid(Figure):
 
         if len(hspace) < nrow - 1:
             hspace = hspace[np.arange(nrow - 1) % len(hspace)]
+        
+        if not hasattr(border, "__len__"):
+            border = (border, border, border, border)
+        elif len(border) == 2:
+            border = (border[0], border[0], border[1], border[1])
 
         if len(wspace) == ncol - 1:
-            wspace = np.pad(wspace, 1)
+            wspace = np.array((border[0], *wspace, border[1]))
 
         if len(hspace) == nrow - 1:
-            hspace = np.pad(hspace, 1)
+            hspace = np.array((border[2], *hspace, border[3]))
 
         assert len(wspace) == ncol + 1
         assert len(hspace) == nrow + 1
