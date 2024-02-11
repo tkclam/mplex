@@ -35,3 +35,8 @@ def remove_bg(c, bg):
         return 1 - r, 1 - g, 1 - b, a
     else:
         raise NotImplementedError
+
+
+def to_gray(c):
+    r, g, b = colors.to_rgb(c)
+    return r * 0.2126 + g * 0.7152 + b * 0.0722
